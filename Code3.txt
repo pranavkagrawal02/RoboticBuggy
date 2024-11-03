@@ -1,0 +1,83 @@
+const int trigPin = 13;
+const int echoPin = 12;
+long duration;
+int distanceCm;
+
+void setup() {
+pinMode(A0,INPUT);
+pinMode(A1,INPUT);
+pinMode(5,OUTPUT);
+pinMode(6,OUTPUT);
+pinMode(7,OUTPUT);
+pinMode(8,OUTPUT);
+pinMode(trigPin, OUTPUT);
+pinMode(echoPin, INPUT);
+}
+void bstop()
+{
+  digitalWrite(5,LOW);
+  digitalWrite(6,LOW);
+  digitalWrite(7,LOW);
+  digitalWrite(8,LOW);
+}
+void forward()
+{
+  digitalWrite(5,HIGH);
+  digitalWrite(6,LOW);
+  digitalWrite(7,LOW);
+  digitalWrite(8,HIGH);
+}
+void backward()
+{
+  digitalWrite(5,LOW);
+  digitalWrite(6,HIGH);
+  digitalWrite(7,HIGH);
+  digitalWrite(8,LOW);
+}
+void left()
+{
+  digitalWrite(5,HIGH);
+  digitalWrite(6,LOW);
+  digitalWrite(7,LOW);
+  digitalWrite(8,LOW);
+}
+void right()
+{
+  digitalWrite(5,LOW);
+  digitalWrite(6,LOW);
+  digitalWrite(7,LOW);
+  digitalWrite(8,HIGH);
+}
+void loop() {
+int r,l;
+digitalWrite(trigPin, LOW);
+delayMicroseconds(2);
+digitalWrite(trigPin, HIGH);
+delayMicroseconds(10);
+digitalWrite(trigPin, LOW);
+duration = pulseIn(echoPin, HIGH);
+distanceCm= duration*0.0343/2;
+r=digitalRead(A0); // From IR Sensors of buggy
+l=digitalRead(A1);
+
+if(r == 1 && l == 1)
+{
+  forward();
+}
+else if(r == 1 && l== 0)
+{
+  right();
+}
+else if(r == 0 && l == 1)
+{
+  left();
+}
+else if(r == 0 && l == 0)
+{
+  forward();
+}
+if(distanceCm < 15)
+{
+  bstop();
+}
+}
